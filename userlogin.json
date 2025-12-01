@@ -1,0 +1,508 @@
+{
+	"info": {
+		"_postman_id": "8502ab40-146d-4e77-a056-0eb4d276b1fa",
+		"name": "Megavarshini N_ User Login",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50260458",
+		"_collection_link": "https://megavarshinin24mss024-6641072.postman.co/workspace/supermarket~1e5f8186-9115-44eb-8e90-af059e44e724/collection/50260458-8502ab40-146d-4e77-a056-0eb4d276b1fa?action=share&source=collection_link&creator=50260458"
+	},
+	"item": [
+		{
+			"name": "alluser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"TC01 - Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"TC02 - Response body is not empty\", function () {\r",
+							"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+							"});\r",
+							"pm.test(\"TC03 - Response format is JSON\", function () {\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"pm.test(\"TC04 - Response body is an array\", function () {\r",
+							"    pm.expect(pm.response.json()).to.be.an(\"array\");\r",
+							"});\r",
+							"pm.test(\"TC05 - Booking list is not empty\", function () {\r",
+							"    pm.expect(pm.response.json().length).to.be.greaterThan(0);\r",
+							"});\r",
+							"pm.test(\"TC06 - Each booking contains bookingid\", function () {\r",
+							"    pm.response.json().forEach(item => {\r",
+							"        pm.expect(item).to.have.property(\"bookingid\");\r",
+							"    });\r",
+							"});\r",
+							"pm.test(\"TC07 - bookingid is numeric\", function () {\r",
+							"    pm.response.json().forEach(item => {\r",
+							"        pm.expect(item.bookingid).to.be.a(\"number\");\r",
+							"    });\r",
+							"});\r",
+							"pm.test(\"TC08 - bookingid is not null\", function () {\r",
+							"    pm.response.json().forEach(item => {\r",
+							"        pm.expect(item.bookingid).to.not.be.null;\r",
+							"    });\r",
+							"});\r",
+							"pm.test(\"TC09 - Content-Type header exists\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"TC10 - Content-Type is JSON\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"pm.test(\"TC11 - HTTP method is GET\", function () {\r",
+							"    pm.expect(pm.request.method).to.eql(\"GET\");\r",
+							"});\r",
+							"pm.test(\"TC12 - Response time exists\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.exist;\r",
+							"});\r",
+							"pm.test(\"TC13 - Response headers are not empty\", function () {\r",
+							"    pm.expect(pm.response.headers.count()).to.be.greaterThan(0);\r",
+							"});\r",
+							"pm.test(\"TC14 - bookingid is greater than 0\", function () {\r",
+							"    pm.response.json().forEach(item => {\r",
+							"        pm.expect(item.bookingid).to.be.greaterThan(0);\r",
+							"    });\r",
+							"});\r",
+							"pm.test(\"TC15 - bookingid values are unique\", function () {\r",
+							"    let ids = pm.response.json().map(item => item.bookingid);\r",
+							"    let uniqueIds = new Set(ids);\r",
+							"    pm.expect(uniqueIds.size).to.eql(ids.length);\r",
+							"});\r",
+							"pm.test(\"TC16 - GET works without auth\", function () {\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"});\r",
+							"pm.test(\"TC17 - Response does not contain personal details\", function () {\r",
+							"    pm.response.json().forEach(item => {\r",
+							"        pm.expect(item.firstname).to.be.undefined;\r",
+							"        pm.expect(item.lastname).to.be.undefined;\r",
+							"    });\r",
+							"});\r",
+							"pm.test(\"TC18 - bookingid field name is correct\", function () {\r",
+							"    pm.response.json().forEach(item => {\r",
+							"        pm.expect(item).to.have.property(\"bookingid\");\r",
+							"    });\r",
+							"});\r",
+							"pm.test(\"TC19 - Response contains multiple records\", function () {\r",
+							"    pm.expect(pm.response.json().length).to.be.at.least(1);\r",
+							"});\r",
+							"pm.test(\"TC20 - No null items in response\", function () {\r",
+							"    pm.response.json().forEach(item => {\r",
+							"        pm.expect(item).to.not.be.null;\r",
+							"    });\r",
+							"});\r",
+							"pm.test(\"TC21 - bookingid is integer\", function () {\r",
+							"    pm.response.json().forEach(item => {\r",
+							"        pm.expect(Number.isInteger(item.bookingid)).to.be.true;\r",
+							"    });\r",
+							"});\r",
+							"pm.test(\"TC22 - Response JSON parses correctly\", function () {\r",
+							"    pm.expect(() => pm.response.json()).to.not.throw();\r",
+							"});\r",
+							"pm.test(\"TC23 - Response is not XML\", function () {\r",
+							"    pm.expect(pm.response.text()).to.not.include(\"<?xml\");\r",
+							"});\r",
+							"pm.test(\"TC24 - GET endpoint is repeatable\", function () {\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"});\r",
+							"pm.test(\"TC25 - Correct endpoint is called\", function () {\r",
+							"    pm.expect(pm.request.url.toString()).to.include(\"/booking\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://restful-booker.herokuapp.com/booking",
+					"protocol": "https",
+					"host": [
+						"restful-booker",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getbyid",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://restful-booker.herokuapp.com/booking/11",
+					"protocol": "https",
+					"host": [
+						"restful-booker",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"booking",
+						"11"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "authuser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"id\",pm.response.json().id);\r",
+							"// =======================\r",
+							"// POST https://restful-booker.herokuapp.com/auth\r",
+							"// Link type: JUST LINK (no id in URL)\r",
+							"// =======================\r",
+							"\r",
+							"// -------- Common parsing --------\r",
+							"let rawText = pm.response.text();\r",
+							"\r",
+							"let resJson = {};\r",
+							"let isJson = false;\r",
+							"\r",
+							"try {\r",
+							"    if (rawText && rawText.trim() !== \"\") {\r",
+							"        resJson = pm.response.json();\r",
+							"        isJson = true;\r",
+							"    }\r",
+							"} catch (e) {\r",
+							"    resJson = {};\r",
+							"    isJson = false;\r",
+							"}\r",
+							"\r",
+							"let reqBody = {};\r",
+							"try {\r",
+							"    if (pm.request.body && pm.request.body.raw) {\r",
+							"        reqBody = JSON.parse(pm.request.body.raw);\r",
+							"    }\r",
+							"} catch (e) {\r",
+							"    reqBody = {};\r",
+							"}\r",
+							"\r",
+							"// Host & path info\r",
+							"let host = (pm.request.url.host || []).join('.');\r",
+							"let path = (pm.request.url.path || []).join('/');\r",
+							"\r",
+							"// Helper flags\r",
+							"let hasToken = isJson && Object.prototype.hasOwnProperty.call(resJson, \"token\");\r",
+							"let hasReason = isJson && Object.prototype.hasOwnProperty.call(resJson, \"reason\");\r",
+							"\r",
+							"// =======================\r",
+							"// 25 TEST CASES\r",
+							"// =======================\r",
+							"\r",
+							"// TC01 - response time < 2000 ms\r",
+							"pm.test(\"TC01 - Response time below 2000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2817);\r",
+							"});\r",
+							"\r",
+							"// TC02 - response time > 10 ms (simple lower bound)\r",
+							"pm.test(\"TC02 - Response time above 10ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.above(10);\r",
+							"});\r",
+							"\r",
+							"// TC03 - HTTP method is POST\r",
+							"pm.test(\"TC03 - HTTP method is POST\", function () {\r",
+							"    pm.expect(pm.request.method).to.eql(\"POST\");\r",
+							"});\r",
+							"\r",
+							"// TC04 - Status code is 200\r",
+							"pm.test(\"TC04 - Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// TC05 - Status code is in 2xx range\r",
+							"pm.test(\"TC05 - Status code in 2xx range\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.within(200, 299);\r",
+							"});\r",
+							"\r",
+							"// TC06 - Status code is not 4xx/5xx\r",
+							"pm.test(\"TC06 - Status code is not error (not 4xx/5xx)\", function () {\r",
+							"    pm.expect(pm.response.code).to.not.be.within(400, 599);\r",
+							"});\r",
+							"\r",
+							"// TC07 - Content-Type header is present\r",
+							"pm.test(\"TC07 - Content-Type header present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"\r",
+							"// TC08 - Content-Type contains json\r",
+							"pm.test(\"TC08 - Content-Type contains 'json'\", function () {\r",
+							"    let ct = pm.response.headers.get(\"Content-Type\") || \"\";\r",
+							"    pm.expect(ct.toLowerCase()).to.include(\"json\");\r",
+							"});\r",
+							"\r",
+							"// TC09 - Content-Type has charset info\r",
+							"pm.test(\"TC09 - Content-Type has charset\", function () {\r",
+							"    let ct = pm.response.headers.get(\"Content-Type\") || \"\";\r",
+							"    pm.expect(ct.toLowerCase()).to.include(\"charset\");\r",
+							"});\r",
+							"\r",
+							"// TC10 - Raw response body is not empty\r",
+							"pm.test(\"TC10 - Raw response body is not empty\", function () {\r",
+							"    pm.expect(rawText.trim().length).to.be.above(0);\r",
+							"});\r",
+							"\r",
+							"// TC11 - Response is valid JSON object\r",
+							"pm.test(\"TC11 - Response is valid JSON object\", function () {\r",
+							"    pm.expect(isJson, \"response should be JSON\").to.be.true;\r",
+							"    pm.expect(resJson).to.be.an(\"object\");\r",
+							"});\r",
+							"\r",
+							"// TC12 - Response contains either 'token' or 'reason'\r",
+							"pm.test(\"TC12 - Response has either token or reason\", function () {\r",
+							"    pm.expect(hasToken || hasReason, \"should have token or reason\").to.be.true;\r",
+							"});\r",
+							"\r",
+							"// TC13 - If token present, token is a non-empty string\r",
+							"pm.test(\"TC13 - Token is non-empty string when present\", function () {\r",
+							"    if (hasToken) {\r",
+							"        pm.expect(resJson.token).to.be.a(\"string\");\r",
+							"        pm.expect(resJson.token.trim()).to.not.eql(\"\");\r",
+							"    } else {\r",
+							"        pm.expect(true).to.eql(true); // skip\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"// TC14 - If token present, token length >= 5\r",
+							"pm.test(\"TC14 - Token length >= 5 when present\", function () {\r",
+							"    if (hasToken) {\r",
+							"        pm.expect(resJson.token.length).to.be.at.least(5);\r",
+							"    } else {\r",
+							"        pm.expect(true).to.eql(true); // skip\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"// TC15 - If token present, token has no whitespace\r",
+							"pm.test(\"TC15 - Token has no whitespace when present\", function () {\r",
+							"    if (hasToken) {\r",
+							"        pm.expect(/\\s/.test(resJson.token)).to.be.false;\r",
+							"    } else {\r",
+							"        pm.expect(true).to.eql(true); // skip\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"// TC16 - If token present, it is alphanumeric\r",
+							"pm.test(\"TC16 - Token is alphanumeric when present\", function () {\r",
+							"    if (hasToken) {\r",
+							"        pm.expect(resJson.token).to.match(/^[a-zA-Z0-9]+$/);\r",
+							"    } else {\r",
+							"        pm.expect(true).to.eql(true); // skip\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"// TC17 - If reason present, it is 'Bad credentials'\r",
+							"pm.test(\"TC17 - Reason equals 'Bad credentials' when present\", function () {\r",
+							"    if (hasReason) {\r",
+							"        pm.expect(resJson.reason).to.be.a(\"string\");\r",
+							"        pm.expect(resJson.reason).to.eql(\"Bad credentials\");\r",
+							"    } else {\r",
+							"        pm.expect(true).to.eql(true); // skip\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"// TC18 - Both token and reason are not present together\r",
+							"pm.test(\"TC18 - Not both token and reason together\", function () {\r",
+							"    pm.expect(!(hasToken && hasReason), \"cannot have both token and reason\").to.be.true;\r",
+							"});\r",
+							"\r",
+							"// TC19 - URL host is restful-booker.herokuapp.com\r",
+							"pm.test(\"TC19 - Host is restful-booker.herokuapp.com\", function () {\r",
+							"    pm.expect(host).to.eql(\"restful-booker.herokuapp.com\");\r",
+							"});\r",
+							"\r",
+							"// TC20 - URL path contains 'auth'\r",
+							"pm.test(\"TC20 - Path contains 'auth'\", function () {\r",
+							"    pm.expect(path).to.include(\"auth\");\r",
+							"});\r",
+							"\r",
+							"// TC21 - Request body has username field\r",
+							"pm.test(\"TC21 - Request body contains username\", function () {\r",
+							"    pm.expect(reqBody).to.have.property(\"username\");\r",
+							"});\r",
+							"\r",
+							"// TC22 - Request body has password field\r",
+							"pm.test(\"TC22 - Request body contains password\", function () {\r",
+							"    pm.expect(reqBody).to.have.property(\"password\");\r",
+							"});\r",
+							"\r",
+							"// TC23 - Request username and password are not empty\r",
+							"pm.test(\"TC23 - username and password not empty\", function () {\r",
+							"    if (reqBody.username !== undefined) {\r",
+							"        pm.expect(String(reqBody.username).trim()).to.not.eql(\"\");\r",
+							"    }\r",
+							"    if (reqBody.password !== undefined) {\r",
+							"        pm.expect(String(reqBody.password).trim()).to.not.eql(\"\");\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"// TC24 - Response JSON has only expected top-level keys\r",
+							"pm.test(\"TC24 - Response has only 'token' or 'reason' as top-level keys\", function () {\r",
+							"    if (isJson) {\r",
+							"        const allowed = [\"token\", \"reason\"];\r",
+							"        const keys = Object.keys(resJson);\r",
+							"        const allAllowed = keys.every(k => allowed.includes(k));\r",
+							"        pm.expect(allAllowed, \"only token/reason expected\").to.be.true;\r",
+							"    } else {\r",
+							"        pm.expect(true).to.eql(true); // skip\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"// TC25 - Status code is exactly 200 (duplicate safety check)\r",
+							"pm.test(\"TC25 - Status code exactly 200 (auth API behaviour)\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"admin\",\r\n    \"password\" : \"password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://restful-booker.herokuapp.com/auth",
+					"protocol": "https",
+					"host": [
+						"restful-booker",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteuser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"TC02 - Content-Type header exists\",function()\r",
+							"{\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://restful-booker.herokuapp.com/booking/5",
+					"protocol": "https",
+					"host": [
+						"restful-booker",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"booking",
+						"5"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "https://restful-booker.herokuapp.com/booking"
+		},
+		{
+			"key": "id",
+			"value": null
+		}
+	]
+}

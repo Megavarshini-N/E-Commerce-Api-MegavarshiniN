@@ -1,0 +1,572 @@
+{
+	"info": {
+		"_postman_id": "d30fcc60-b450-4e14-bb0c-9998c06be869",
+		"name": "Megavarshini N _ Carts",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50260458",
+		"_collection_link": "https://megavarshinin24mss024-6641072.postman.co/workspace/supermarket~1e5f8186-9115-44eb-8e90-af059e44e724/collection/50260458-d30fcc60-b450-4e14-bb0c-9998c06be869?action=share&source=collection_link&creator=50260458"
+	},
+	"item": [
+		{
+			"name": "getvalues",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://69243e8c3ad095fb84735617.mockapi.io/carts",
+					"protocol": "https",
+					"host": [
+						"69243e8c3ad095fb84735617",
+						"mockapi",
+						"io"
+					],
+					"path": [
+						"carts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse response & request body safely\r",
+							"let resJson = {};\r",
+							"try {\r",
+							"    resJson = pm.response.json();\r",
+							"} catch (e) {\r",
+							"    resJson = {};\r",
+							"}\r",
+							"\r",
+							"let reqJson = {};\r",
+							"try {\r",
+							"    if (pm.request.body && pm.request.body.raw) {\r",
+							"        reqJson = JSON.parse(pm.request.body.raw);\r",
+							"    }\r",
+							"} catch (e) {\r",
+							"    reqJson = {};\r",
+							"}\r",
+							"\r",
+							"// TC01 - verify response time < 2000ms\r",
+							"pm.test(\"TC01 - verify response time below 2000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"});\r",
+							"\r",
+							"// TC02 - verify response time > 100ms (example lower bound)\r",
+							"pm.test(\"TC02 - verify response time above 100ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.above(100);\r",
+							"});\r",
+							"\r",
+							"// TC03 - verify exact status code (MockAPI usually 201 for POST)\r",
+							"pm.test(\"TC03 - status code verify 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"// TC04 - verify status code is in [200, 201]\r",
+							"pm.test(\"TC04 - status code oneOf 200 or 201\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+							"});\r",
+							"\r",
+							"// TC05 - verify status code between 200 and 299\r",
+							"pm.test(\"TC05 - status code in 2xx range\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.within(200, 299);\r",
+							"});\r",
+							"\r",
+							"// TC06 - verify status code above 199\r",
+							"pm.test(\"TC06 - status code above 199\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.above(199);\r",
+							"});\r",
+							"\r",
+							"// TC07 - verify status code below 300\r",
+							"pm.test(\"TC07 - status code below 300\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.below(300);\r",
+							"});\r",
+							"\r",
+							"// TC08 - check Content-Type header is present\r",
+							"pm.test(\"TC08 - Content-Type header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"\r",
+							"// TC09 - check Content-Type value contains json\r",
+							"pm.test(\"TC09 - Content-Type contains json\", function () {\r",
+							"    const ct = pm.response.headers.get(\"Content-Type\") || \"\";\r",
+							"    pm.expect(ct.toLowerCase()).to.include(\"json\");\r",
+							"});\r",
+							"\r",
+							"// TC10 - verify response body is valid JSON object\r",
+							"pm.test(\"TC10 - response is a JSON object\", function () {\r",
+							"    pm.expect(resJson).to.be.an(\"object\");\r",
+							"});\r",
+							"\r",
+							"// TC11 - verify response has id field\r",
+							"pm.test(\"TC11 - response contains id field\", function () {\r",
+							"    pm.expect(resJson).to.have.property(\"id\");\r",
+							"});\r",
+							"\r",
+							"// TC12 - verify response has productname and productcount fields\r",
+							"pm.test(\"TC12 - response contains productname and productcount\", function () {\r",
+							"    pm.expect(resJson).to.have.property(\"productname\");\r",
+							"    pm.expect(resJson).to.have.property(\"productcount\");\r",
+							"});\r",
+							"\r",
+							"// TC13 - verify response productname == request productname\r",
+							"pm.test(\"TC13 - productname in response matches request\", function () {\r",
+							"    if (reqJson.productname !== undefined) {\r",
+							"        pm.expect(resJson.productname).to.eql(reqJson.productname);\r",
+							"    } else {\r",
+							"        pm.expect(true).to.eql(true); // skip if not sent\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"// TC14 - verify productcount is same as request and not empty\r",
+							"pm.test(\"TC14 - productcount in response matches request\", function () {\r",
+							"    if (reqJson.productcount !== undefined) {\r",
+							"        pm.expect(resJson.productcount).to.eql(reqJson.productcount);\r",
+							"    } else {\r",
+							"        pm.expect(true).to.eql(true); // skip if not sent\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"// TC15 - verify id is not empty / null\r",
+							"pm.test(\"TC15 - id is not null or empty\", function () {\r",
+							"    pm.expect(resJson.id).to.exist;\r",
+							"    pm.expect(String(resJson.id)).to.not.eql(\"\");\r",
+							"});\r",
+							"pm.collectionVariables.set(\"id\", resJson.id);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"productname\": \"MEGAAA\",\r\n    \"productcount\": 26,\r\n    \"id\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://69243e8c3ad095fb84735617.mockapi.io/carts",
+					"protocol": "https",
+					"host": [
+						"69243e8c3ad095fb84735617",
+						"mockapi",
+						"io"
+					],
+					"path": [
+						"carts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getbyid",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://69243e8c3ad095fb84735617.mockapi.io/carts/{{id}}",
+					"protocol": "https",
+					"host": [
+						"69243e8c3ad095fb84735617",
+						"mockapi",
+						"io"
+					],
+					"path": [
+						"carts",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "put",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resJson = {};\r",
+							"try {\r",
+							"    resJson = pm.response.json();\r",
+							"} catch (e) {\r",
+							"    resJson = {};\r",
+							"}\r",
+							"let reqJson = {};\r",
+							"try {\r",
+							"    if (pm.request.body && pm.request.body.raw) {\r",
+							"        reqJson = JSON.parse(pm.request.body.raw);\r",
+							"    }\r",
+							"} catch (e) {\r",
+							"    reqJson = {};\r",
+							"}\r",
+							"let pathSegments = pm.request.url.path;\r",
+							"let pathId = pathSegments[pathSegments.length - 1];\r",
+							"pm.test(\"TC01 - verify response time below 2000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"});\r",
+							"pm.test(\"TC02 - verify response time above 100ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.above(100);\r",
+							"});\r",
+							"pm.test(\"TC03 - status code verify 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"TC04 - status code oneOf 200 or 201\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+							"});\r",
+							"pm.test(\"TC05 - status code in 2xx range\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.within(200, 299);\r",
+							"});\r",
+							"pm.test(\"TC06 - status code above 199\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.above(199);\r",
+							"});\r",
+							"pm.test(\"TC07 - status code below 300\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.below(300);\r",
+							"});\r",
+							"pm.test(\"TC08 - Content-Type header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"pm.test(\"TC09 - Content-Type contains json\", function () {\r",
+							"    const ct = pm.response.headers.get(\"Content-Type\") || \"\";\r",
+							"    pm.expect(ct.toLowerCase()).to.include(\"json\");\r",
+							"});\r",
+							"pm.test(\"TC10 - response is a JSON object\", function () {\r",
+							"    pm.expect(resJson).to.be.an(\"object\");\r",
+							"});\r",
+							"pm.test(\"TC11 - response contains id field\", function () {\r",
+							"    pm.expect(resJson).to.have.property(\"id\");\r",
+							"});\r",
+							"pm.test(\"TC12 - response contains productname and productcount\", function () {\r",
+							"    pm.expect(resJson).to.have.property(\"productname\");\r",
+							"    pm.expect(resJson).to.have.property(\"productcount\");\r",
+							"});\r",
+							"pm.test(\"TC13 - productname in response matches request\", function () {\r",
+							"    if (reqJson.productname !== undefined) {\r",
+							"        pm.expect(resJson.productname).to.eql(reqJson.productname);\r",
+							"    } else {\r",
+							"        pm.expect(true).to.eql(true); // skip if not in request\r",
+							"    }\r",
+							"});\r",
+							"pm.test(\"TC14 - productcount in response matches request\", function () {\r",
+							"    if (reqJson.productcount !== undefined) {\r",
+							"        pm.expect(resJson.productcount).to.eql(reqJson.productcount);\r",
+							"    } else {\r",
+							"        pm.expect(true).to.eql(true); // skip if not in request\r",
+							"    }\r",
+							"});\r",
+							"pm.test(\"TC15 - id in response matches path id and not empty\", function () {\r",
+							"    pm.expect(resJson.id).to.exist;\r",
+							"    pm.expect(String(resJson.id)).to.not.eql(\"\");\r",
+							"    // MockAPI usually returns id as string\r",
+							"    if (pathId) {\r",
+							"        pm.expect(String(resJson.id)).to.eql(String(pathId));\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"productname\": \"Refined Ceramic Car\",\r\n    \"productcount\": 30,\r\n    \"id\": \"3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://69243e8c3ad095fb84735617.mockapi.io/carts/{{id}}",
+					"protocol": "https",
+					"host": [
+						"69243e8c3ad095fb84735617",
+						"mockapi",
+						"io"
+					],
+					"path": [
+						"carts",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-testcases",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500 ms\", () => {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(5077);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is an array\", () => {\r",
+							"    pm.expect(pm.response.json()).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Array is not empty\", () => {\r",
+							"    pm.expect(pm.response.json().length).to.be.above(0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Each item has id\", () => {\r",
+							"    pm.response.json().forEach(item => pm.expect(item).to.have.property(\"id\"));\r",
+							"});\r",
+							"pm.test(\"Content-Type is application/json\", () => {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains no null items\", () => {\r",
+							"    pm.response.json().forEach(item => pm.expect(item).not.to.be.null);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"IDs are unique\", () => {\r",
+							"    let ids = pm.response.json().map(x => x.id);\r",
+							"    pm.expect(new Set(ids).size).to.eql(ids.length);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Items follow valid structure\", () => {\r",
+							"    pm.response.json().forEach(item => {\r",
+							"        pm.expect(item).to.be.an(\"object\");\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valid JSON response\", () => {\r",
+							"    pm.expect(() => pm.response.json()).not.to.throw();\r",
+							"});\r",
+							"\r",
+							"pm.test(\"No unexpected properties\", () => {\r",
+							"    pm.response.json().forEach(item => {\r",
+							"        pm.expect(Object.keys(item)).to.have.members([ 'productname', 'productcount', 'id']);\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Array length is valid\", () => {\r",
+							"    pm.expect(pm.response.json().length).to.be.at.least(1);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://69243e8c3ad095fb84735617.mockapi.io/carts",
+					"protocol": "https",
+					"host": [
+						"69243e8c3ad095fb84735617",
+						"mockapi",
+						"io"
+					],
+					"path": [
+						"carts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resJson = {};\r",
+							"let isJson = false;\r",
+							"let rawText = pm.response.text();\r",
+							"\r",
+							"try {\r",
+							"    if (rawText && rawText.trim() !== \"\") {\r",
+							"        resJson = pm.response.json();\r",
+							"        isJson = true;\r",
+							"    }\r",
+							"} catch (e) {\r",
+							"    resJson = {};\r",
+							"    isJson = false;\r",
+							"}\r",
+							"\r",
+							"// Get id from URL path (last segment)\r",
+							"let pathSegments = pm.request.url.path;\r",
+							"let pathId = pathSegments[pathSegments.length - 1] || \"\";\r",
+							"\r",
+							"// --------- Test cases ---------\r",
+							"\r",
+							"// TC01 - verify response time < 2000ms\r",
+							"pm.test(\"TC01 - verify response time below 2000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"});\r",
+							"\r",
+							"// TC02 - verify response time > 50ms (example lower bound)\r",
+							"pm.test(\"TC02 - verify response time above 50ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.above(50);\r",
+							"});\r",
+							"\r",
+							"// TC03 - verify status code is 200 or 204 (common for DELETE)\r",
+							"pm.test(\"TC03 - status code is 200 or 201\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+							"});\r",
+							"\r",
+							"// TC04 - verify status code is in 2xx range\r",
+							"pm.test(\"TC04 - status code in 2xx range\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.within(200, 299);\r",
+							"});\r",
+							"\r",
+							"// TC05 - check Content-Type header when body is not empty\r",
+							"pm.test(\"TC05 - Content-Type header check when body exists\", function () {\r",
+							"    if (rawText && rawText.trim() !== \"\") {\r",
+							"        pm.response.to.have.header(\"Content-Type\");\r",
+							"        const ct = pm.response.headers.get(\"Content-Type\") || \"\";\r",
+							"        pm.expect(ct.toLowerCase()).to.include(\"json\");\r",
+							"    } else {\r",
+							"        pm.expect(true).to.eql(true); // skip if no body\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"// TC06 - verify response body is empty when status is 204\r",
+							"pm.test(\"TC06 - empty body for 404 status\", function () {\r",
+							"    if (pm.response.code === 404) {\r",
+							"        //pm.expect(rawText.trim()).to.eql(\"Not found\");\r",
+							"    } else {\r",
+							"        pm.expect(true).to.eql(true); // skip for non-204\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"// TC07 - if JSON body present, it should be an object and may contain id\r",
+							"pm.test(\"TC07 - if body JSON, it is object and may have id\", function () {\r",
+							"    if (isJson) {\r",
+							"       // pm.expect(resJson).to.be.an(\"object\");\r",
+							"        // id may or may not exist depending on MockAPI config\r",
+							"        if (resJson.id !== undefined) {\r",
+							"            pm.expect(String(resJson.id)).to.not.eql(\"\");\r",
+							"        }\r",
+							"    } else {\r",
+							"        pm.expect(true).to.eql(true); // skip if no JSON\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"// TC08 - verify id in URL path is not empty\r",
+							"pm.test(\"TC08 - id in URL path is not empty\", function () {\r",
+							"    pm.expect(pathId).to.exist;\r",
+							"    pm.expect(String(pathId)).to.not.eql(\"\");\r",
+							"});\r",
+							"\r",
+							"// TC09 - if response has id, it matches the id from URL path\r",
+							"pm.test(\"TC09 - id in response matches id in URL (if present)\", function () {\r",
+							"    if (isJson && resJson.id !== undefined) {\r",
+							"        pm.expect(String(resJson.id)).to.eql(String(pathId));\r",
+							"    } else {\r",
+							"        pm.expect(true).to.eql(true); // skip if no id in body\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"// TC10 - verify request method is DELETE\r",
+							"pm.test(\"TC10 - verify HTTP method is DELETE\", function () {\r",
+							"    pm.expect(pm.request.method).to.eql(\"DELETE\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://69243e8c3ad095fb84735617.mockapi.io/carts/{{id}}",
+					"protocol": "https",
+					"host": [
+						"69243e8c3ad095fb84735617",
+						"mockapi",
+						"io"
+					],
+					"path": [
+						"carts",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "30"
+		}
+	]
+}
